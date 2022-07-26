@@ -2,6 +2,7 @@ package guru.springfamework.services;
 
 import guru.springfamework.api.v1.mapper.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CustomerRepository;
 import java.util.List;
@@ -25,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
         .map(
             customer -> {
               CustomerDTO customerDto = customerMapper.customerToCustomerDTO(customer);
-              customerDto.setCustomerUrl("/api/v1/customer/" + customer.getId());
+              customerDto.setCustomerUrl(generateCustomerUrl(customer.getId()));
               return customerDto;
             })
         .collect(Collectors.toList());
@@ -36,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     return customerRepository
         .findById(id)
         .map(customerMapper::customerToCustomerDTO)
-        .map(custDto -> custDto.setCustomerUrl("/api/v1/customers/" + id))
+        .map(custDto -> custDto.setCustomerUrl(generateCustomerUrl(id)))
         .orElseThrow(RuntimeException::new);
   }
 
@@ -55,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
   private CustomerDTO saveAndReturnDTO(Customer customer) {
     Customer savedCustomer = customerRepository.save(customer);
     CustomerDTO returnDto = customerMapper.customerToCustomerDTO(savedCustomer);
-    returnDto.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+    returnDto.setCustomerUrl(generateCustomerUrl(savedCustomer.getId()));
     return returnDto;
   }
 
@@ -74,9 +75,13 @@ public class CustomerServiceImpl implements CustomerService {
               }
               return customerMapper.customerToCustomerDTO(customerRepository.save(customer));
             })
-        .map(custDto -> custDto.setCustomerUrl("/api/v1/customers/" + id))
+        .map(custDto -> custDto.setCustomerUrl(generateCustomerUrl(id)))
         .orElseThrow(RuntimeException::new);
     // todo implement better exception handling;
+  }
+
+  private String generateCustomerUrl(Long id) {
+    return CustomerController.BASE_URL + id;
   }
 
   @Override
