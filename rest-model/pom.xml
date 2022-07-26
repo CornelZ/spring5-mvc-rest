@@ -15,8 +15,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <!--<dependencies>-->
+
+    <!--</dependencies>-->
     <build>
-        <plugins>
+          <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
@@ -37,6 +40,6 @@
                     </sources>
                 </configuration>
             </plugin>
-        </plugins>
+          </plugins>
     </build>
 </project>
