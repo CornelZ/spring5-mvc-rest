@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
         .findById(id)
         .map(customerMapper::customerToCustomerDTO)
         .map(custDto -> custDto.setCustomerUrl(generateCustomerUrl(id)))
-        .orElseThrow(RuntimeException::new);
+        .orElseThrow(ResourceNotFoundException::new);
   }
 
   @Override
