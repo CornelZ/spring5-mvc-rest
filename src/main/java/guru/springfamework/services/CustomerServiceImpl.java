@@ -76,8 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
               return customerMapper.customerToCustomerDTO(customerRepository.save(customer));
             })
         .map(custDto -> custDto.setCustomerUrl(generateCustomerUrl(id)))
-        .orElseThrow(RuntimeException::new);
-    // todo implement better exception handling;
+        .orElseThrow(ResourceNotFoundException::new);
   }
 
   private String generateCustomerUrl(Long id) {
